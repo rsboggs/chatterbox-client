@@ -17,6 +17,18 @@
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
+      <select name="rooms">
+      </select>
+      <form>
+        Username: <br>
+        <input type="text" name="username" placeholder="Choose a name!"><br>
+        Message: <br>
+        <input type="text" name="message" placeholder="What's happening?"><br>
+        Room: <br>
+        <input type="text" name="room" placeholder="Select your room!"><br>
+        <input type="submit" onclick="app.send(userInput())">
+      </form>
+      <button onclick="app.fetch()">Refresh Feed</button>
     </div>
     <div id="chats"></div>
   </body>
