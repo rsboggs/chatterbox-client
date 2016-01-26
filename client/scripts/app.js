@@ -11,13 +11,13 @@ var escapeCharacters = {
 
 //Escape invalid characters
 
-var escaper = function (message) {
-  if(message === undefined) {
+var escaper = function (text) {
+  if(text === undefined) {
     return 'undefined';
-  } else if (message === null) {
+  } else if (text === null) {
     return 'null';
   }
-  var arr = message.split('');
+  var arr = text.split('');
   for(var j = 0; j<arr.length; j++) {
       if(escapeCharacters[arr[j]]) {
         arr[j] = escapeCharacters[arr[j]];
@@ -63,7 +63,7 @@ var app = {
       // This is the url you should use to communicate with the parse API server.
       url: app.server,
       type: 'GET',
-      // data: JSON.stringify(message),
+      data: 'order=-createdAt',
       contentType: 'application/json',
       success: function (data) {
         var messages = data.results;
@@ -76,8 +76,10 @@ var app = {
         }
         //call external fetch function with messages parameter
         for(var i = 0; i < messages.length; i++) {
+          if(valid(messages[i])) {
           app.addMessage(messages[i]);
-          app.addRoom(messages[i]);
+          app.addRoom(messages[i]);   
+          }
         }
         
         //Event Handling
@@ -92,8 +94,18 @@ var app = {
   clearMessages: function() {
     $('#chats').children().remove();
   },
+  allMessages: {},
   addMessage: function(message) {
-    $('#chats').append('<div><span>' + escaper(message['username']) + "</span>: " + escaper(message['text']) + '</div>');
+    // if(app.allMessages[escaper(message.username)] !== escaper(message.text)) {
+    if (app.friends.indexOf(escaper(message.username)) !== -1) {
+      $('#chats').append('<div class="message friended"><span class="username">' + escaper(message['username']) 
+        + "</span> " + escaper(message['text']) + '<span class="time">' + moment.utc(timeHandler(message)).local().fromNow() +'</span> </div>');
+    } else {
+      $('#chats').append('<div class="message"><span class="username">' + escaper(message['username']) 
+        + "</span> " + escaper(message['text']) + '<span class="time">' + moment.utc(timeHandler(message)).local().fromNow() +'</span> </div>');
+    }
+      // app.allMessages[escaper(message.username)] = escaper(message.text);
+    // }
   },
   addRoom: function(message) {
     if (app.rooms.indexOf(escaper(message['roomname'])) === -1 && escaper(message['roomname']).length < 40) {
@@ -101,21 +113,50 @@ var app = {
       $("select").prepend('<option>' + escaper(message.roomname) + '</option>');
     }
   },
+  currentRoom: undefined,
   addFriend: function(friendName) {
     if (app.friends.indexOf(friendName) === -1) {
       app.friends.push(friendName);
+      app.clearMessages();
+      app.fetch(app.currentRoom);
     }
   }
 };
+
+//handles createdAt time string
+var timeHandler = function (message) {
+  //format : 2016-01-26T03:22:57.864Z
+  var time = message.createdAt;
+  var year = time.substring(0, 4);
+  var month = time.substring(5, 7) - 1;
+  var day = time.substring(8, 10);
+  var hour = time.substring(11, 13);
+  var minute = time.substring(14, 16);
+  var second = time.substring(17, 19);
+  return [year, month, day, hour, minute, second];
+}
+
+//check message validity
+var valid = function(message) {
+  if(escaper(message.text).length > 200) {
+    return false;
+  } else if(escaper(message.text) === 'undefined') {
+    return false;
+  } else if(escaper(message.username) === 'undefined') {
+    return false;
+  }
+  return true;
+}
 
 //Event handling functions called from within Fetch method
 var eventHandling = function () {
   $(document.body).on('change', 'select', function() {
     var selectedRoom = $('select').val();
+    app.currentRoom = selectedRoom;
     app.clearMessages();
     app.fetch(selectedRoom);
   });
-  $(document.body).on('click', 'span', function() {
+  $(document.body).on('click', 'span.username', function() {
     app.addFriend($(this).html());
   });
 }

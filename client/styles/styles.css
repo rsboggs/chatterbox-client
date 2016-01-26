@@ -1,5 +1,5 @@
 body {
-    background: #eee;
+    background-color: #FFFFFF;
     text-align: center;
     padding: 0 25px;
     font-family: arial, sans-serif;
@@ -9,7 +9,7 @@ body {
     width: 500px;
     margin: auto;
     text-align: left;
-    background: white;
+    background-color: #f5f8fa;
     padding: 50px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
@@ -81,4 +81,32 @@ form input[type=text] {
 
 .spinner img {
     padding: 10px;
+}
+
+.message {
+    background-color: #FFFFFF;
+    width: 75%;
+    padding: 15px 40px;
+    border-radius: 20px;
+    margin: 20px auto;
+    font-family: 'Raleway', sans-serif;
+    border: solid 2px #eee;
+}
+
+.username {
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+}
+
+.username:hover {
+    cursor: pointer;
+    color: #59ADEE;
+}
+
+.time {
+    padding: 10px;
+}
+
+.friended {
+    color: green;
 }
