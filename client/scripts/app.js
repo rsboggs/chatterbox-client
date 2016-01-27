@@ -67,6 +67,7 @@ var app = {
       contentType: 'application/json',
       success: function (data) {
         var messages = data.results;
+        app.clearMessages();
         
         // If fetch is called with roomname, this filters messages array to room matches
         if (roomname !== undefined) {
@@ -99,10 +100,10 @@ var app = {
     // if(app.allMessages[escaper(message.username)] !== escaper(message.text)) {
     if (app.friends.indexOf(escaper(message.username)) !== -1) {
       $('#chats').append('<div class="message friended"><span class="username">' + escaper(message['username']) 
-        + "</span> " + escaper(message['text']) + '<span class="time">' + moment.utc(timeHandler(message)).local().fromNow() +'</span> </div>');
+        + "</span> " + '<span class="time">' + moment.utc(timeHandler(message)).local().fromNow() +'</span><br/>' + escaper(message['text']) + '</div>');
     } else {
-      $('#chats').append('<div class="message"><span class="username">' + escaper(message['username']) 
-        + "</span> " + escaper(message['text']) + '<span class="time">' + moment.utc(timeHandler(message)).local().fromNow() +'</span> </div>');
+        $('#chats').append('<div class="message"><span class="username">' + escaper(message['username']) 
+        + "</span> " + '<span class="time">' + moment.utc(timeHandler(message)).local().fromNow() +'</span><br/>' + escaper(message['text']) + '</div>');    
     }
       // app.allMessages[escaper(message.username)] = escaper(message.text);
     // }
@@ -163,5 +164,4 @@ var eventHandling = function () {
 
 //Call app to load initial messages
 app.fetch();
-
 

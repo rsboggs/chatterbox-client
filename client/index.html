@@ -3,13 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>chatterbox</title>
-    <link rel="stylesheet" href="styles/styles.css">
-    <link href='https://fonts.googleapis.com/css?family=Montserrat|Raleway' rel='stylesheet' type='text/css'>
 
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/styles.css">
+    
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat|Raleway' rel='stylesheet' type='text/css'>
     <!-- dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
+    
     <!-- your scripts -->
     <script src="env/config.js"></script>
     <script src="scripts/moment.js"></script>
@@ -17,22 +22,39 @@
   </head>
   <body>
     <div id="main">
-      <h1>chatterbox</h1>
-      <!-- Your HTML goes here! -->
-      <div>Rooms</div>
-      <select name="rooms" id="roomSelect">
-      </select>
-      <form>
-        Username: <br>
-        <input type="text" name="username" placeholder="Choose a name!"><br>
-        Message: <br>
-        <input type="text" name="message" placeholder="What's happening?"><br>
-        Room: <br>
-        <input type="text" name="room" placeholder="Select your room!"><br>
-        <input type="submit" onclick="app.send(userInput())">
-      </form>
-      <button onclick="app.fetch()">Refresh Feed</button>
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>chatterbox</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3 currentUser">
+          <img src="https://lh3.googleusercontent.com/-1uPerrT_xWQ/AAAAAAAAAAI/AAAAAAAAAXI/oC4p9oQj_4M/s0-c-k-no-ns/photo.jpg" />
+        </div>
+        <div class="col-xs-9">
+          <form>
+            <input type="text" name="username" placeholder="Choose a name!">
+            <input type="text" name="room" placeholder="Select your room!"><br>
+            <div class="input-group">
+              <input type="text" class="form-control" name="message" placeholder="What's happening?"/>
+                <span class="input-group-addon">
+                <button onclick="app.send(userInput())">
+                  <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                </button>
+              </span>
+            </div>
+          </form>
+          <div class="lower-main">
+            <span class="rooms">Rooms: </span><select name="rooms" id="roomSelect">
+            </select>
+            <button class="btn btn-primary" onclick="app.fetch()">Refresh Feed</button>
+          </div>        
+        </div>
+      </div>
     </div>
-    <div id="chats"></div>
+    <div class="row">
+      <div id="friends" class="col-xs-3"></div>
+      <div id="chats" class="col-xs-9"></div>
+    </div>
   </body>
 </html>
